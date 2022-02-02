@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        a:link {color: aquamarine; text-decoration: dimgray}
+        a:hover {color: brown; text-decoration: underline}
+        a:visited {color: coral}
+
+        #main li {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <ul id="main">
+            <li><a href="indexold.html">Main</a></li>
+            <li><a href="usera.php">User</a></li>
+            <li>Blog</li>
+            <li>About</li>
+        </ul>
+    </div>
+    <details>
+        <summary>Open something</summary>
+        <div>
+            <p>Upload a photo: </p>
+            <form action="photoview.php" method="post" enctype="multipart/form-data">
+                <p><input name="photo" type="file" accept="image/jpeg"></p>
+                <p><input type="submit"></p>
+            </form>
+        </div>
+    </details>
+</body>
+</html>
