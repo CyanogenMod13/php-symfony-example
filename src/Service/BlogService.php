@@ -76,7 +76,7 @@ class BlogService
     {
         $category = $this->categoryRepository->get($categoryId);
         $blogs = $this->blogRepository->getByCategory($category);
-        $blogDTOs[] = [];
+        $blogDTOs = [];
         foreach ($blogs as $blog) {
             $blogDTOs[] = $this->blogMapper->toDto($blog);
         }
