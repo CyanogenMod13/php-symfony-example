@@ -7,6 +7,8 @@ use App\Entity\Dto\AuthorDTO;
 use App\Entity\Dto\BlogDTO;
 use App\Entity\Dto\BlogEditDataDTO;
 use App\Entity\Dto\Mapper\BlogMapper;
+use App\Repository\AuthorNotFoundException;
+use App\Repository\AuthorRepository;
 use App\Repository\BlogNotFoundException;
 use App\Repository\BlogRepository;
 use App\Repository\CategoryNotFoundException;
@@ -22,6 +24,7 @@ class BlogService
         private EntityManagerInterface $entityManager,
         private BlogRepository $blogRepository,
         private CategoryRepository $categoryRepository,
+        private AuthorRepository $authorRepository
     )
     {
         $this->blogMapper = new BlogMapper();
@@ -45,6 +48,35 @@ class BlogService
     {
         $blogDTOs = [];
         $blogs = $this->blogRepository->getAll();
+        foreach ($blogs as $blog) {
+            $blogDTOs[] = $this->blogMapper->toDto($blog);
+        }
+        return $blogDTOs;
+    }
+
+    /**
+     * @param string $authorId
+     * @return BlogDTO
+     * @throws AuthorNotFoundException
+     */
+    public function getByAuthor(string $authorId): BlogDTO
+    {
+        $author = $this->authorRepository->get($authorId);
+        return $this->blogMapper->toDto(
+            $this->blogRepository->getByAuthor($author)
+        );
+    }
+
+    /**
+     * @param string $categoryId
+     * @return Blog[]
+     * @throws CategoryNotFoundException
+     */
+    public function getByCategory(string $categoryId): array
+    {
+        $category = $this->categoryRepository->get($categoryId);
+        $blogs = $this->blogRepository->getByCategory($category);
+        $blogDTOs[] = [];
         foreach ($blogs as $blog) {
             $blogDTOs[] = $this->blogMapper->toDto($blog);
         }

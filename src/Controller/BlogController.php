@@ -31,6 +31,27 @@ class BlogController extends AbstractController
         return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
     }
 
+    #[Route('/author/{id}', methods: 'GET')]
+    public function getAllByAuthor(string $id): Response
+    {
+        $blogDTOs = $this->blogService->getByAuthor($id);
+        return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
+    }
+
+    #[Route('/category/{id}', methods: 'GET')]
+    public function getAllByCategory(string $id): Response
+    {
+        try {
+            $blogDTOs = $this->blogService->getByCategory($id);
+            return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
+        } catch (CategoryNotFoundException $e) {
+            return new JsonResponse(
+                ['error' => $e->getMessage()],
+                Response::HTTP_FOUND
+            );
+        }
+    }
+
     #[Route('/create', methods: 'POST')]
     public function createBlog(Request $request): Response
     {

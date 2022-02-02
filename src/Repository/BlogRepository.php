@@ -40,15 +40,29 @@ class BlogRepository
     {
         return $this->repository->findAll();
     }
-/*
+
+    /**
+     * @param Author $author
+     * @return Blog
+     */
     public function getByAuthor(Author $author): Blog
     {
+        $query = $this->entityManager->createQuery('select b from App\Entity\Blog b where b.author = :author_id');
+        $query->setParameter('author_id', $author);
+        return $query->getResult()[0];
     }
 
+    /**
+     * @param Category $category
+     * @return Blog[]
+     */
     public function getByCategory(Category $category): array
     {
+        $query = $this->entityManager->createQuery('select b from App\Entity\Blog b where b.category = :category');
+        $query->setParameter('category', $category);
+        return $query->getResult();
     }
-*/
+
     /**
      * @param Blog $blog
      * @return void
