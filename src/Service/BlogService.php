@@ -4,11 +4,9 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Blog;
-use App\Entity\Dto\AuthorDTO;
 use App\Entity\Dto\BlogCreateDTO;
 use App\Entity\Dto\BlogDTO;
 use App\Entity\Dto\BlogEditDataDTO;
-use App\Entity\Dto\CategoryDTO;
 use App\Repository\BlogNotFoundException;
 use App\Repository\BlogRepository;
 use App\Repository\CategoryNotFoundException;
@@ -33,7 +31,7 @@ class BlogService
     public function getBlogData(string $blogId): BlogDTO
     {
         $blog = $this->blogRepository->get($blogId);
-        return $this->toBlogDTO($blog);
+        return BlogDTO::toDto($blog);
     }
 
     /**
@@ -44,7 +42,7 @@ class BlogService
         $blogDTOs = [];
         $blogs = $this->blogRepository->getAll();
         foreach ($blogs as $blog) {
-            $blogDTOs[] = $this->toBlogDTO($blog);
+            $blogDTOs[] = BlogDTO::toDto($blog);
         }
         return $blogDTOs;
     }
@@ -96,23 +94,5 @@ class BlogService
     {
         $blog = $this->blogRepository->get($blogId);
         $this->blogRepository->remove($blog);
-    }
-
-    private function toBlogDTO(Blog $blog): BlogDTO
-    {
-        $author = $blog->getAuthor();
-        $category = $blog->getCategory();
-        return new BlogDTO(
-            $blog->getName(),
-            $blog->getAlias(),
-            new AuthorDTO(
-                $author->getFirstName(),
-                $author->getLastName(),
-                $author->getPenName()
-            ),
-            new CategoryDTO(
-                $category->getName()
-            )
-        );
     }
 }
