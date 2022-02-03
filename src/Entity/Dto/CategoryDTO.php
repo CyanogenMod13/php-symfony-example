@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Dto;
 
-class BlogEditDataDTO
+class CategoryDTO
 {
     public function __construct(
-        public string $name,
-        public string $alias
+        public string $name
     )
     {}
 }

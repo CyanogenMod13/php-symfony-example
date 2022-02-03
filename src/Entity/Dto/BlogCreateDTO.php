@@ -1,15 +1,15 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Entity\Dto;
 
-class BlogDTO
+class BlogCreateDTO
 {
     public function __construct(
+        public string $userId,
         public string $name,
         public string $alias,
-        public AuthorDTO $author,
-        public CategoryDTO $category
+        public string $categoryId,
+        public AuthorDTO $author
     )
     {}
 }

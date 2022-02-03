@@ -1,15 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Dto\BlogDTO;
+use App\Entity\Dto\BlogCreateDTO;
 use App\Entity\Dto\BlogEditDataDTO;
 use App\Repository\BlogNotFoundException;
 use App\Repository\CategoryNotFoundException;
 use App\Service\BlogService;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,44 +27,20 @@ class BlogController extends AbstractController
     public function getAll(): Response
     {
         $blogDTOs = $this->blogService->getAllBlogs();
-        return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
-    }
-
-    #[Route('/author/{id}', methods: 'GET')]
-    public function getAllByAuthor(string $id): Response
-    {
-        $blogDTOs = $this->blogService->getByAuthor($id);
-        return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
-    }
-
-    #[Route('/category/{id}', methods: 'GET')]
-    public function getAllByCategory(string $id): Response
-    {
-        try {
-            $blogDTOs = $this->blogService->getByCategory($id);
-            return new JsonResponse($this->serializer->serialize($blogDTOs, 'json'), json: true);
-        } catch (CategoryNotFoundException $e) {
-            return new JsonResponse(
-                ['error' => $e->getMessage()],
-                Response::HTTP_FOUND
-            );
-        }
+        return $this->json($blogDTOs);
     }
 
     #[Route('/create', methods: 'POST')]
     public function createBlog(Request $request): Response
     {
-        $blogDTO = $this->serializer->deserialize(
+        $blogCreateDTO = $this->serializer->deserialize(
             $request->getContent(),
-            BlogDTO::class,
+            BlogCreateDTO::class,
             'json'
         );
 
-        //user blob id
-        $userBlobId = Uuid::uuid4()->toString();
-
         try {
-            $resultBlogId = $this->blogService->saveBlog($userBlobId, $blogDTO);
+            $resultBlogId = $this->blogService->saveBlog($blogCreateDTO);
             return $this->json(['blogId' => $resultBlogId], Response::HTTP_CREATED);
         } catch (CategoryNotFoundException $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
@@ -77,10 +52,7 @@ class BlogController extends AbstractController
     {
         try {
             $blogDTO = $this->blogService->getBlogData($id);
-            return new JsonResponse(
-                $this->serializer->serialize($blogDTO, 'json'),
-                json: true
-            );
+            return $this->json($blogDTO);
         } catch (BlogNotFoundException $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
         }

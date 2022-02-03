@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Author;
 use App\Entity\Blog;
-use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -42,28 +41,6 @@ class BlogRepository
     }
 
     /**
-     * @param Author $author
-     * @return Blog
-     */
-    public function getByAuthor(Author $author): Blog
-    {
-        $query = $this->entityManager->createQuery('select b from App\Entity\Blog b where b.author = :author_id');
-        $query->setParameter('author_id', $author);
-        return $query->getResult()[0];
-    }
-
-    /**
-     * @param Category $category
-     * @return Blog[]
-     */
-    public function getByCategory(Category $category): array
-    {
-        $query = $this->entityManager->createQuery('select b from App\Entity\Blog b where b.category = :category');
-        $query->setParameter('category', $category);
-        return $query->getResult();
-    }
-
-    /**
      * @param Blog $blog
      * @return void
      */
@@ -73,6 +50,10 @@ class BlogRepository
         $this->entityManager->flush();
     }
 
+    /**
+     * @param Blog $blog
+     * @return void
+     */
     public function remove(Blog $blog): void
     {
         $this->entityManager->remove($blog);
