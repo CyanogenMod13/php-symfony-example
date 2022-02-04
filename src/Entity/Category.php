@@ -6,6 +6,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'blog_category')]
@@ -16,6 +17,7 @@ class Category
     private string $id;
 
     #[ORM\Column]
+	#[Groups('rest')]
     private string $name;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: 'Blog')]
@@ -28,33 +30,21 @@ class Category
         $this->blogs = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return Collection
-     */
     public function getBlogs(): Collection
     {
         return $this->blogs;

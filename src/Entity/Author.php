@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'blog_authors')]
@@ -13,37 +14,20 @@ class Author
     #[ORM\Column(type: 'guid')]
     private string $id;
 
-    #[ORM\Column]
-    private string $firstName;
-
-    #[ORM\Column]
-    private string $lastName;
-
-    #[ORM\Column]
-    private string $penName;
+	#[ORM\Embedded(columnPrefix: false)]
+    private AuthorInfo $name;
 
     #[ORM\OneToOne(mappedBy: 'author')]
     private Blog $blog;
 
-    /**
-     * @param string $id
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $penName
-     * @param Blog $blog
-     */
     public function __construct(
         string $id,
-        string $firstName,
-        string $lastName,
-        string $penName,
+        AuthorInfo $name,
         Blog $blog
     )
     {
         $this->id = $id;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->penName = $penName;
+        $this->name = $name;
         $this->blog = $blog;
     }
 
@@ -55,33 +39,29 @@ class Author
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
+	#[Groups('rest')]
     public function getFirstName(): string
     {
-        return $this->firstName;
+        return $this->name->getFirstName();
     }
 
-    /**
-     * @return string
-     */
+	#[Groups('rest')]
     public function getLastName(): string
     {
-        return $this->lastName;
+        return $this->name->getLastName();
     }
 
-    /**
-     * @return string
-     */
+	#[Groups('rest')]
     public function getPenName(): string
     {
-        return $this->penName;
+        return $this->name->getPenName();
     }
 
-    /**
-     * @return Blog
-     */
+	public function getName(): AuthorInfo
+	{
+		return $this->name;
+	}
+
     public function getBlog(): Blog
     {
         return $this->blog;

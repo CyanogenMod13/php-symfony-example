@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Entity\Dto;
+namespace App\Controller\Json\Data;
 
-class BlogCreateDTO
+use App\Entity\AuthorInfo;
+
+class BlogCreateData
 {
     public function __construct(
         public string $userId,
         public string $name,
         public string $alias,
         public string $categoryId,
-        public AuthorDTO $author
-    )
-    {}
+        public AuthorInfo $author
+    ) {}
 }

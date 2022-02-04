@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Dto\CategoryDTO;
+use App\Controller\Json\Data\CategoryCreateData;
 use App\Repository\CategoryNotFoundException;
 use App\Service\CategoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,18 +18,17 @@ class CategoryController extends AbstractController
 	public function __construct(
 		private CategoryService $categoryService,
 		private SerializerInterface $serializer
-	)
-	{}
+	) {}
 
 	#[Route('/create', methods: ['POST'])]
 	public function createCategory(Request $request): Response
 	{
-		$categoryDTO = $this->serializer->deserialize(
+		$categoryData = $this->serializer->deserialize(
 			$request->getContent(),
-			CategoryDTO::class,
+			CategoryCreateData::class,
 			'json'
 		);
-		$categoryId = $this->categoryService->createCategory($categoryDTO);
+		$categoryId = $this->categoryService->addCategory($categoryData);
 		return $this->json(['categoryId' => $categoryId], Response::HTTP_CREATED);
 	}
 
@@ -37,7 +36,7 @@ class CategoryController extends AbstractController
 	public function getCategory(string $id): Response
 	{
 		try {
-			return $this->json($this->categoryService->getCategoryData($id));
+			return $this->json($this->categoryService->getCategoryData($id), context: ['groups' => ['rest']]);
 		} catch (CategoryNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}
@@ -46,14 +45,14 @@ class CategoryController extends AbstractController
 	#[Route('/', methods: ['GET'])]
 	public function getAll(): Response
 	{
-		return $this->json($this->categoryService->getAllCategory());
+		return $this->json($this->categoryService->getAllCategory(), context: ['groups' => ['rest']]);
 	}
 
 	#[Route('/{id}/blog',methods: ['GET'])]
 	public function getBlogByCategory(string $id): Response
 	{
 		try {
-			return $this->json($this->categoryService->getBlogByCategory($id));
+			return $this->json($this->categoryService->getBlogByCategory($id), context: ['groups' => ['rest']]);
 		} catch (CategoryNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}

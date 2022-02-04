@@ -13,22 +13,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorController extends AbstractController
 {
 	public function __construct(
-		private AuthorService $authorService
-	)
-	{}
+		private AuthorService $authorService,
+	) {}
 
 	#[Route('/', methods: ['GET'])]
 	public function getAll(): Response
 	{
-		return $this->json($this->authorService->getAllAuthor());
+		return $this->json($this->authorService->getAllAuthor(), context: ['groups' => ['rest']]);
 	}
 
 	#[Route('/{id}', methods: ['GET'])]
 	public function getAuthor(string $id): Response
 	{
 		try {
-			$authorDto = $this->authorService->getAuthorData($id);
-			return $this->json($authorDto);
+			return $this->json($this->authorService->getAuthorData($id), context: ['groups' => ['rest']]);
 		} catch (AuthorNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}
@@ -38,8 +36,7 @@ class AuthorController extends AbstractController
 	public function getBlog(string $id): Response
 	{
 		try {
-			$blogDto = $this->authorService->getBlogByAuthor($id);
-			return $this->json($blogDto);
+			return $this->json($this->authorService->getBlogByAuthor($id), context: ['groups' => ['rest']]);
 		} catch (AuthorNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}

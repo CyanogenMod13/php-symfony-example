@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'blog_blogs')]
@@ -14,15 +15,19 @@ class Blog
     private string $id;
 
     #[ORM\Column]
+	#[Groups('rest')]
     private string $name;
 
     #[ORM\Column]
+	#[Groups('rest')]
     private string $alias;
 
     #[ORM\ManyToOne]
+	#[Groups('rest')]
     private Category $category;
 
     #[ORM\OneToOne(cascade: ["persist", "remove"])]
+	#[Groups('rest')]
     private Author $author;
 
     public function __construct(
@@ -30,65 +35,43 @@ class Blog
         string $name,
         string $alias,
         string $authorId,
-        string $authorFirstName,
-        string $authorLastName,
-        string $authorPenName,
+        AuthorInfo $authorName,
         Category $category
     )
     {
         $this->id = $id;
         $this->name = $name;
         $this->alias = $alias;
-        $this->author = new Author($authorId, $authorFirstName, $authorLastName, $authorPenName, $this);
+        $this->author = new Author($authorId, $authorName, $this);
         $this->category = $category;
     }
 
-    /**
-     * @param string $name
-     * @param string $alias
-     * @return void
-     */
-    public function edit(string $name, string $alias): void
+    public function edit(string $name, string $alias, Category $category): void
     {
         $this->name = $name;
         $this->alias = $alias;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getAlias(): string
     {
         return $this->alias;
     }
 
-    /**
-     * @return Category
-     */
     public function getCategory(): Category
     {
         return $this->category;
     }
 
-    /**
-     * @return Author
-     */
     public function getAuthor(): Author
     {
         return $this->author;

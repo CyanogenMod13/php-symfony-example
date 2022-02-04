@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Controller\Json\Data\CategoryCreateData;
+use App\Entity\Blog;
 use App\Entity\Category;
-use App\Entity\Dto\BlogDTO;
-use App\Entity\Dto\CategoryDTO;
 use App\Repository\CategoryNotFoundException;
 use App\Repository\CategoryRepository;
 use Ramsey\Uuid\Uuid;
@@ -14,55 +14,37 @@ class CategoryService
 {
 	public function __construct(
 		public CategoryRepository $categoryRepository
-	)
-	{}
+	) {}
 
 	/**
-	 * @param string $categoryId
-	 * @return CategoryDTO
 	 * @throws CategoryNotFoundException
 	 */
-	public function getCategoryData(string $categoryId): CategoryDTO
+	public function getCategoryData(string $categoryId): Category
 	{
-		return CategoryDTO::toDto($this->categoryRepository->get($categoryId));
+		return $this->categoryRepository->get($categoryId);
 	}
 
 	/**
-	 * @return CategoryDTO[]
+	 * @return Category[]
 	 */
 	public function getAllCategory(): array
 	{
-		$categoryDTOs = [];
-		$categories = $this->categoryRepository->getAll();
-		foreach ($categories as $category) {
-			$categoryDTOs[] = CategoryDTO::toDto($category);
-		}
-		return $categoryDTOs;
+		return $this->categoryRepository->getAll();
 	}
 
 	/**
-	 * @param string $categoryId
-	 * @return BlogDTO[]
+	 * @return Blog[]
 	 * @throws CategoryNotFoundException
 	 */
 	public function getBlogByCategory(string $categoryId): array
 	{
-		$blogDTOs = [];
-		$category = $this->categoryRepository->get($categoryId);
-		foreach ($category->getBlogs() as $blog) {
-			$blogDTOs[] = BlogDTO::toDto($blog);
-		}
-		return $blogDTOs;
+		return $this->categoryRepository->get($categoryId)->getBlogs()->toArray();
 	}
 
-	/**
-	 * @param CategoryDTO $categoryDTO
-	 * @return string categoryId
-	 */
-	public function createCategory(CategoryDTO $categoryDTO): string
+	public function addCategory(CategoryCreateData $categoryData): string
 	{
 		$categoryId = Uuid::uuid4()->toString();
-		$category = new Category($categoryId, $categoryDTO->name);
+		$category = new Category($categoryId, $categoryData->name);
 		$this->categoryRepository->add($category);
 		return $categoryId;
 	}

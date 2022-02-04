@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Controller\Json\Data\BlogCreateData;
+use App\Controller\Json\Data\BlogEditData;
 use App\Entity\Blog;
-use App\Entity\Dto\BlogCreateDTO;
-use App\Entity\Dto\BlogDTO;
-use App\Entity\Dto\BlogEditDataDTO;
 use App\Repository\BlogNotFoundException;
 use App\Repository\BlogRepository;
 use App\Repository\CategoryNotFoundException;
@@ -20,39 +19,28 @@ class BlogService
         private EntityManagerInterface $entityManager,
         private BlogRepository $blogRepository,
         private CategoryRepository $categoryRepository,
-    )
-    {}
+    ) {}
 
     /**
-     * @param string $blogId
-     * @return BlogDTO
      * @throws BlogNotFoundException
      */
-    public function getBlogData(string $blogId): BlogDTO
+    public function getBlogData(string $blogId): Blog
     {
-        $blog = $this->blogRepository->get($blogId);
-        return BlogDTO::toDto($blog);
+        return $this->blogRepository->get($blogId);
     }
 
     /**
-     * @return BlogDTO[]
+     * @return Blog[]
      */
     public function getAllBlogs(): array
     {
-        $blogDTOs = [];
-        $blogs = $this->blogRepository->getAll();
-        foreach ($blogs as $blog) {
-            $blogDTOs[] = BlogDTO::toDto($blog);
-        }
-        return $blogDTOs;
+        return $this->blogRepository->getAll();
     }
 
     /**
-     * @param BlogCreateDTO $blogCreateDTO
-     * @return string
      * @throws CategoryNotFoundException
      */
-    public function saveBlog(BlogCreateDTO $blogCreateDTO): string
+    public function saveBlog(BlogCreateData $blogCreateDTO): string
     {
         $blogId = Uuid::uuid4()->toString();
         $category = $this->categoryRepository->get($blogCreateDTO->categoryId);
@@ -62,9 +50,7 @@ class BlogService
             $blogCreateDTO->name,
             $blogCreateDTO->alias,
             $blogCreateDTO->userId,
-            $blogCreateDTO->author->firstName,
-            $blogCreateDTO->author->lastName,
-            $blogCreateDTO->author->penName,
+            $blogCreateDTO->author,
             $category
         );
         $this->blogRepository->add($blog);
@@ -72,22 +58,19 @@ class BlogService
         return $blogId;
     }
 
-    /**
-     * @param string $blogId
-     * @param BlogEditDataDTO $dataDTO
-     * @return void
-     * @throws BlogNotFoundException
-     */
-    public function editBlog(string $blogId, BlogEditDataDTO $dataDTO): void
+	/**
+	 * @throws BlogNotFoundException
+	 * @throws CategoryNotFoundException
+	 */
+    public function editBlog(string $blogId, BlogEditData $dataDTO): void
     {
         $blog = $this->blogRepository->get($blogId);
-        $blog->edit($dataDTO->name, $dataDTO->alias);
+		$category = $this->categoryRepository->get($dataDTO->categoryId);
+        $blog->edit($dataDTO->name, $dataDTO->alias, $category);
         $this->entityManager->flush();
     }
 
     /**
-     * @param string $blogId
-     * @return void
      * @throws BlogNotFoundException
      */
     public function removeBlog(string $blogId): void
