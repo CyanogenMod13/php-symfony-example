@@ -45,8 +45,11 @@ class Category
         $this->name = $name;
     }
 
-    public function getBlogs(): Collection
+	/**
+	 * @return Blog[]
+	 */
+    public function getBlogs(): array
     {
-        return $this->blogs;
+        return $this->blogs->toArray();
     }
 }

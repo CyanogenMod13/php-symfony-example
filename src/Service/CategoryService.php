@@ -38,7 +38,7 @@ class CategoryService
 	 */
 	public function getBlogByCategory(string $categoryId): array
 	{
-		return $this->categoryRepository->get($categoryId)->getBlogs()->toArray();
+		return $this->categoryRepository->get($categoryId)->getBlogs();
 	}
 
 	public function addCategory(CategoryCreateData $categoryData): string

@@ -18,12 +18,10 @@ class BlogRepository
         $this->repository = $this->entityManager->getRepository(Blog::class);
     }
 
-    /**
-     * @param string $id
-     * @return Blog
-     * @throws BlogNotFoundException
-     */
-    public function get(string $id): Blog
+	/**
+	 * @throws BlogNotFoundException
+	 */
+	public function get(string $id): Blog
     {
         $blog = $this->repository->find($id);
         if (!$blog) {
@@ -40,20 +38,18 @@ class BlogRepository
         return $this->repository->findAll();
     }
 
-    /**
-     * @param Blog $blog
-     * @return void
-     */
+	/**
+	 * Remove flush()
+	 */
     public function add(Blog $blog): void
     {
         $this->entityManager->persist($blog);
         $this->entityManager->flush();
     }
 
-    /**
-     * @param Blog $blog
-     * @return void
-     */
+	/**
+	 * Remove flush()
+	 */
     public function remove(Blog $blog): void
     {
         $this->entityManager->remove($blog);
