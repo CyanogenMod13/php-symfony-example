@@ -31,9 +31,7 @@ class Author
         $this->blog = $blog;
     }
 
-    /**
-     * @return string
-     */
+	#[Groups('rest')]
     public function getId(): string
     {
         return $this->id;

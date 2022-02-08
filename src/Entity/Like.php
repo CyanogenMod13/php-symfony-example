@@ -18,9 +18,10 @@ class Like
 	#[ORM\ManyToOne]
 	private Article $article;
 
-	public function __construct(string $id, Author $author)
+	public function __construct(string $id, Author $author, Article $article)
 	{
 		$this->id = $id;
+		$this->article = $article;
 		$this->author = $author;
 	}
 
@@ -32,5 +33,10 @@ class Like
 	public function getAuthor(): Author
 	{
 		return $this->author;
+	}
+
+	public function getArticle(): Article
+	{
+		return $this->article;
 	}
 }

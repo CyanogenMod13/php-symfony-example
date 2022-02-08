@@ -41,18 +41,22 @@ class BlogRepository
 	/**
 	 * Remove flush()
 	 */
-    public function add(Blog $blog): void
+    public function add(Blog $blog, bool $transactional = false): void
     {
         $this->entityManager->persist($blog);
-        $this->entityManager->flush();
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
     }
 
 	/**
 	 * Remove flush()
 	 */
-    public function remove(Blog $blog): void
+    public function remove(Blog $blog, bool $transactional = false): void
     {
         $this->entityManager->remove($blog);
-        $this->entityManager->flush();
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
     }
 }

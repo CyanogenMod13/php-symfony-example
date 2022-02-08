@@ -40,9 +40,11 @@ class CategoryRepository
         return $this->repository->findAll();
     }
 
-    public function add(Category $category): void
+    public function add(Category $category, bool $transactional = false): void
     {
         $this->entityManager->persist($category);
-        $this->entityManager->flush();
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
     }
 }

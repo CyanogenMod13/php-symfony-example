@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/category')]
@@ -36,7 +37,7 @@ class CategoryController extends AbstractController
 	public function getCategory(string $id): Response
 	{
 		try {
-			return $this->json($this->categoryService->getCategoryData($id), context: ['groups' => ['rest']]);
+			return $this->json($this->categoryService->getCategoryData($id), context: [AbstractNormalizer::GROUPS => ['rest']]);
 		} catch (CategoryNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}
@@ -45,14 +46,14 @@ class CategoryController extends AbstractController
 	#[Route('/', methods: ['GET'])]
 	public function getAll(): Response
 	{
-		return $this->json($this->categoryService->getAllCategory(), context: ['groups' => ['rest']]);
+		return $this->json($this->categoryService->getAllCategory(), context: [AbstractNormalizer::GROUPS => ['rest']]);
 	}
 
 	#[Route('/{id}/blog',methods: ['GET'])]
 	public function getBlogByCategory(string $id): Response
 	{
 		try {
-			return $this->json($this->categoryService->getBlogByCategory($id), context: ['groups' => ['rest']]);
+			return $this->json($this->categoryService->getBlogByCategory($id), context: [AbstractNormalizer::GROUPS => ['rest']]);
 		} catch (CategoryNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
 		}

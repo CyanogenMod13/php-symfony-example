@@ -42,18 +42,22 @@ class ArticleRepository
 	/**
 	 * Remove flush()
 	 */
-	public function add(Article $article): void
+	public function add(Article $article, bool $transactional = false): void
 	{
 		$this->entityManager->persist($article);
-		$this->entityManager->flush();
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
 	}
 
 	/**
 	 * Remove flush()
 	 */
-	public function remove(Article $article): void
+	public function remove(Article $article, bool $transactional = false): void
 	{
 		$this->entityManager->remove($article);
-		$this->entityManager->flush();
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
 	}
 }

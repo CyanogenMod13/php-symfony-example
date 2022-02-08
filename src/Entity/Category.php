@@ -14,6 +14,7 @@ class Category
 {
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
+	#[Groups('rest')]
     private string $id;
 
     #[ORM\Column]
