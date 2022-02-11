@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import CategoriesView from "../views/CategoriesView.vue";
 import BlogsView from "../views/BlogsView.vue";
 import ArticlesView from "../views/ArticlesView.vue";
+import ArticleView from "../views/ArticleView.vue";
 
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
 			path: '/blogs',
 			name: 'Blogs',
 			component: BlogsView
+		},
+		{
+			path: '/articles/:id',
+			name: 'Article',
+			component: ArticleView
 		},
 		{
 			path: '/articles',
