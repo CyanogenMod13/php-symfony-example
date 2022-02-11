@@ -8,8 +8,8 @@ use App\Application\Commands\ArticlePublishCommand;
 use App\Domain\Model\Article;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
-use App\Infrastructure\Persistance\Doctrine\ArticleRepository;
-use App\Infrastructure\Persistance\Doctrine\AuthorRepository;
+use App\Infrastructure\Persistence\Doctrine\ArticleRepository;
+use App\Infrastructure\Persistence\Doctrine\AuthorRepository;
 use Ramsey\Uuid\Uuid;
 
 class ArticlePublisherHandle

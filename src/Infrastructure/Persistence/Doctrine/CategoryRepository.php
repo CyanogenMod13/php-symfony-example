@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistance\Doctrine;
+namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Model\Category;
 use App\Domain\Repository\CategoryRepositoryInterface;

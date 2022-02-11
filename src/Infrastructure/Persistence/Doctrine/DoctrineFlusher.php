@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistance\Doctrine;
+namespace App\Infrastructure\Persistence\Doctrine;
 
-use App\Infrastructure\Persistance\Flusher;
+use App\Infrastructure\Persistence\Flusher;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineFlusher implements Flusher

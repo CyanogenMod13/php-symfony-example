@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Persistance;
+namespace App\Infrastructure\Persistence;
 
 interface Flusher
 {

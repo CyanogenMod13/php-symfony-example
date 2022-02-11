@@ -9,7 +9,7 @@ use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
-use App\Infrastructure\Persistance\Flusher;
+use App\Infrastructure\Persistence\Flusher;
 
 class BlogEditHandler implements Handler
 {
