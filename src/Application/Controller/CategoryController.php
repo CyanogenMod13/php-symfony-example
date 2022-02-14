@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/category')]
+#[Route('/categories')]
 class CategoryController extends AbstractController
 {
 	public function __construct(
@@ -56,8 +56,8 @@ class CategoryController extends AbstractController
 		);
 	}
 
-	#[Route('/{id}/blog',methods: ['GET'])]
-	public function getBlogByCategory(string $id): Response
+	#[Route('/{id}/blogs',methods: ['GET'])]
+	public function getBlogsByCategory(string $id): Response
 	{
 		try {
 			return $this->json(

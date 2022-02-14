@@ -116,6 +116,8 @@ class Article
 	/**
 	 * @return Comment[]
 	 */
+	#[Groups(['rest'])]
+	#[SerializedName('comments')]
 	public function getComments(): array
 	{
 		return $this->comments->toArray();
