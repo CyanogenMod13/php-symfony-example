@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,9 +18,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 class Comment
 {
 	#[ORM\Id]
-	#[ORM\Column(type: 'guid')]
+	#[ORM\Column(type: 'blog_id')]
 	#[Groups('rest')]
-	private string $id;
+	private BlogId $id;
 
 	#[ORM\Column]
 	private DateTimeImmutable $time; //publishedAt
@@ -45,7 +46,7 @@ class Comment
 	#[Groups('rest')]
 	private int $likesNumber;
 
-	public function __construct(string $id, string $content, Author $author)
+	public function __construct(BlogId $id, string $content, Author $author)
 	{
 		$this->id = $id;
 		$this->content = $content;
@@ -56,7 +57,7 @@ class Comment
 
 	public function reply(string $content, Author $author): Comment
 	{
-		$replyComment = new self(Uuid::uuid4()->toString(), $content, $author);
+		$replyComment = new self(BlogId::generate(), $content, $author);
 		$replyComment->setParent($this);
 		$this->children->add($replyComment);
 		return $replyComment;
@@ -67,7 +68,7 @@ class Comment
 		$this->likesNumber++;
 	}
 
-	public function getId(): string
+	public function getId(): BlogID
 	{
 		return $this->id;
 	}

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,9 +14,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Blog
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: 'blog_id')]
 	#[Groups('rest')]
-    private string $id;
+    private BlogID $id;
 
     #[ORM\Column]
 	#[Groups('rest')]
@@ -37,10 +38,10 @@ class Blog
 	private Collection $articles;
 
     public function __construct(
-        string $id,
+        BlogID $id,
         string $name,
         string $alias,
-        string $authorId,
+        BlogId $authorId,
         AuthorInfo $authorName,
         Category $category
     )
@@ -60,7 +61,7 @@ class Blog
 		$this->category = $category;
     }
 
-    public function getId(): string
+    public function getId(): BlogId
     {
         return $this->id;
     }

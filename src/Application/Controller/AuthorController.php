@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Application\Controller;
 
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\AuthorRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +32,7 @@ class AuthorController extends AbstractController
 	{
 		try {
 			return $this->json(
-				$this->authorRepository->get($id),
+				$this->authorRepository->get(BlogId::generate($id)),
 				context: [AbstractNormalizer::GROUPS => ['rest']]
 			);
 		} catch (AuthorNotFoundException $e) {
@@ -44,7 +45,7 @@ class AuthorController extends AbstractController
 	{
 		try {
 			return $this->json(
-				$this->authorRepository->get($id)->getBlog(),
+				$this->authorRepository->get(BlogId::generate($id))->getBlog(),
 				context: [AbstractNormalizer::GROUPS => ['rest']]
 			);
 		} catch (AuthorNotFoundException $e) {

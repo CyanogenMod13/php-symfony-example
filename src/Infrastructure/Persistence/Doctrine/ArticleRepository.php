@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Model\Article;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\ArticleRepositoryInterface;
 use App\Domain\Repository\Exception\ArticleNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +25,7 @@ class ArticleRepository implements ArticleRepositoryInterface
 	/**
 	 * @throws ArticleNotFoundException
 	 */
-	public function get(string $id): Article
+	public function get(BlogId $id): Article
 	{
 		$article = $this->repository->find($id);
 		if (!$article) {

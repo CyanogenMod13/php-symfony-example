@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -11,8 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Author
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'guid')]
-    private string $id;
+    #[ORM\Column(type: 'blog_id')]
+    private BlogId $id;
 
 	#[ORM\Embedded(columnPrefix: false)]
     private AuthorInfo $name;
@@ -21,7 +22,7 @@ class Author
     private Blog $blog;
 
     public function __construct(
-        string $id,
+        BlogId $id,
         AuthorInfo $name,
         Blog $blog
     )
@@ -32,7 +33,7 @@ class Author
     }
 
 	#[Groups('rest')]
-    public function getId(): string
+    public function getId(): BlogId
     {
         return $this->id;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Model\Blog;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ class BlogRepository implements BlogRepositoryInterface
 	/**
 	 * @throws BlogNotFoundException
 	 */
-	public function get(string $id): Blog
+	public function get(BlogId $id): Blog
     {
         $blog = $this->repository->find($id);
         if (!$blog) {

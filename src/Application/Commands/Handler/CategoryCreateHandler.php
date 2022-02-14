@@ -6,6 +6,7 @@ namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\CategoryCreateCommand;
 use App\Domain\Model\Category;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -15,9 +16,9 @@ class CategoryCreateHandler implements Handler
 		private CategoryRepositoryInterface $categoryRepository
 	) {}
 
-	public function handle(CategoryCreateCommand $categoryCreateCommand): string
+	public function handle(CategoryCreateCommand $categoryCreateCommand): BlogId
 	{
-		$categoryId = Uuid::uuid4()->toString();
+		$categoryId = BlogId::generate();
 		$category = new Category($categoryId, $categoryCreateCommand->name);
 		$this->categoryRepository->add($category);
 		return $categoryId;

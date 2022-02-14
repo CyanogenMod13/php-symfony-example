@@ -9,6 +9,7 @@ use App\Application\Commands\BlogEditCommand;
 use App\Application\Commands\Handler\ArticlePublisherHandle;
 use App\Application\Commands\Handler\BlogCreateHandler;
 use App\Application\Commands\Handler\BlogEditHandler;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
@@ -55,7 +56,7 @@ class BlogController extends AbstractController
     public function getBlog(string $id): Response
     {
         try {
-            $blog = $this->blogRepository->get($id);
+            $blog = $this->blogRepository->get(BlogId::generate($id));
 			return $this->json($blog, context: [AbstractNormalizer::GROUPS => ['rest']]);
         } catch (BlogNotFoundException $e) {
             return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
@@ -83,7 +84,7 @@ class BlogController extends AbstractController
     public function removeBlog(string $id): Response
     {
         try {
-			$blog = $this->blogRepository->get($id);
+			$blog = $this->blogRepository->get(BlogID::generate($id));
 			$this->blogRepository->remove($blog);
             return $this->json([]);
         } catch (BlogNotFoundException $e) {
@@ -95,7 +96,7 @@ class BlogController extends AbstractController
 	public function getArticles(string $id): Response
 	{
 		try {
-			$blog = $this->blogRepository->get($id);
+			$blog = $this->blogRepository->get(BlogId::generate($id));
 			$articles = $blog->getArticles();
 			return $this->json($articles, context: [
 				AbstractNormalizer::GROUPS => ['rest'],

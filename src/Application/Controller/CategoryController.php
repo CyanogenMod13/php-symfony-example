@@ -5,6 +5,7 @@ namespace App\Application\Controller;
 
 use App\Application\Commands\CategoryCreateCommand;
 use App\Application\Commands\Handler\CategoryCreateHandler;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +40,7 @@ class CategoryController extends AbstractController
 	{
 		try {
 			return $this->json(
-				$this->categoryRepository->get($id),
+				$this->categoryRepository->get(BlogId::generate($id)),
 				context: [AbstractNormalizer::GROUPS => ['rest']]
 			);
 		} catch (CategoryNotFoundException $e) {
@@ -61,7 +62,7 @@ class CategoryController extends AbstractController
 	{
 		try {
 			return $this->json(
-				$this->categoryRepository->get($id)->getBlogs(),
+				$this->categoryRepository->get(BlogId::generate($id))->getBlogs(),
 				context: [AbstractNormalizer::GROUPS => ['rest']]
 			);
 		} catch (CategoryNotFoundException $e) {

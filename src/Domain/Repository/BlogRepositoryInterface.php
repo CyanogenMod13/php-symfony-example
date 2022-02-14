@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Repository;
 
 use App\Domain\Model\Blog;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 
 interface BlogRepositoryInterface
@@ -12,7 +13,7 @@ interface BlogRepositoryInterface
 	/**
 	 * @throws BlogNotFoundException
 	 */
-	public function get(string $id): Blog;
+	public function get(BlogId $id): Blog;
 
 	/**
 	 * @return Blog[]

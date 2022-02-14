@@ -6,6 +6,7 @@ namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\ArticlePublishCommand;
 use App\Domain\Model\Article;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
 use App\Infrastructure\Persistence\Doctrine\ArticleRepository;
@@ -25,10 +26,10 @@ class ArticlePublisherHandle
 	 */
 	public function handle(ArticlePublishCommand $articleCreateData): Article
 	{
-		$author = $this->authorRepository->get($articleCreateData->authorId);
-		$blog = $this->blogRepository->get($articleCreateData->blogId);
+		$author = $this->authorRepository->get(BlogId::generate($articleCreateData->authorId));
+		$blog = $this->blogRepository->get(BlogId::generate($articleCreateData->blogId));
 		$article = new Article(
-			Uuid::uuid4()->toString(),
+			BlogId::generate(),
 			$articleCreateData->title,
 			$articleCreateData->content,
 			$author,

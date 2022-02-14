@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Controller;
 
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\ArticleRepositoryInterface;
 use App\Domain\Repository\Exception\ArticleNotFoundException;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +36,7 @@ class ArticleController extends AbstractController
 	public function getArticle(string $id): Response
 	{
 		try {
-			$article = $this->articleRepository->get($id);
+			$article = $this->articleRepository->get(BlogId::generate($id));
 			return $this->json($article, context: [AbstractNormalizer::GROUPS => ['rest']]);
 		} catch (ArticleNotFoundException $e) {
 			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
@@ -45,7 +47,7 @@ class ArticleController extends AbstractController
 	public function getComments(string $id): Response
 	{
 		try {
-			$article = $this->articleRepository->get($id);
+			$article = $this->articleRepository->get(BlogId::generate($id));
 			$comments = $article->getComments();
 			return $this->json($comments, context: [AbstractNormalizer::GROUPS => ['rest']]);
 		} catch (ArticleNotFoundException $e) {

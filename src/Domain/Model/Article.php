@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,12 +20,12 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 class Article
 {
 	#[ORM\Id]
-	#[ORM\Column(type: 'guid')]
+	#[ORM\Column(type: 'blog_id')]
 	#[Groups('rest')]
-	private string $id;
+	private BlogId $id;
 
 	#[ORM\Column]
-	private DateTimeImmutable $publishedAt; //publishedAt
+	private DateTimeImmutable $publishedAt;
 
 	#[ORM\Column]
 	#[Groups('rest')]
@@ -51,7 +52,7 @@ class Article
 	#[ORM\OneToMany(mappedBy: 'article', targetEntity: 'Like', cascade: ['all'])]
 	private Collection $likes;
 
-	public function __construct(string $id, string $title, string $content, Author $author, Blog $blog)
+	public function __construct(BlogId $id, string $title, string $content, Author $author, Blog $blog)
 	{
 		$this->id = $id;
 		$this->title = $title;
@@ -76,7 +77,7 @@ class Article
 		$this->likes->add(new Like(Uuid::uuid4()->toString(), $author, $this));
 	}
 
-	public function getId(): string
+	public function getId(): BlogId
 	{
 		return $this->id;
 	}

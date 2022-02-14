@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,9 +14,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Category
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'guid')]
+    #[ORM\Column(type: 'blog_id')]
 	#[Groups('rest')]
-    private string $id;
+    private BlogID $id;
 
     #[ORM\Column]
 	#[Groups('rest')]
@@ -24,14 +25,14 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: 'Blog')]
     private Collection $blogs;
 
-    public function __construct(string $id, string $name)
+    public function __construct(BlogId $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
         $this->blogs = new ArrayCollection();
     }
 
-    public function getId(): string
+    public function getId(): BlogId
     {
         return $this->id;
     }

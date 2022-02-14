@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Model\Category;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +25,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @throws CategoryNotFoundException
      */
-    public function get(string $id): Category
+    public function get(BlogId $id): Category
     {
         $category = $this->repository->find($id);
         if (!$category) {

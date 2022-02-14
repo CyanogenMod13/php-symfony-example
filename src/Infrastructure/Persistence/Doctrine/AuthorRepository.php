@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine;
 
 use App\Domain\Model\Author;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\AuthorRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ class AuthorRepository implements AuthorRepositoryInterface
     /**
      * @throws AuthorNotFoundException
      */
-    public function get(string $id): Author
+    public function get(BlogId $id): Author
     {
         $author = $this->repository->find($id);
         if (!$author) {

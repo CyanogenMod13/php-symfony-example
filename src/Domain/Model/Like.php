@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Model\Type\BlogId;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -12,20 +13,20 @@ class Like
 {
 	#[ORM\Id]
 	#[ORM\Column(type: 'guid')]
-	private string $id;
+	private BlogId $id;
 	#[ORM\ManyToOne]
 	private Author $author;
 	#[ORM\ManyToOne]
 	private Article $article;
 
-	public function __construct(string $id, Author $author, Article $article)
+	public function __construct(BlogID $id, Author $author, Article $article)
 	{
 		$this->id = $id;
 		$this->article = $article;
 		$this->author = $author;
 	}
 
-	public function getId(): string
+	public function getId(): BlogId
 	{
 		return $this->id;
 	}

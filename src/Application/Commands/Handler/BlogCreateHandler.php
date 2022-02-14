@@ -6,6 +6,7 @@ namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\BlogCreateCommand;
 use App\Domain\Model\Blog;
+use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
@@ -21,16 +22,16 @@ class BlogCreateHandler implements Handler
 	/**
 	 * @throws CategoryNotFoundException
 	 */
-	public function handle(BlogCreateCommand $blogCreateDTO): string
+	public function handle(BlogCreateCommand $blogCreateDTO): BlogId
 	{
-		$blogId = Uuid::uuid4()->toString();
-		$category = $this->categoryRepository->get($blogCreateDTO->categoryId);
+		$blogId = BlogId::generate();
+		$category = $this->categoryRepository->get(BlogId::generate($blogCreateDTO->categoryId));
 
 		$blog = new Blog(
 			$blogId,
 			$blogCreateDTO->name,
 			$blogCreateDTO->alias,
-			$blogCreateDTO->userId,
+			BlogId::generate($blogCreateDTO->userId),
 			$blogCreateDTO->author,
 			$category
 		);
