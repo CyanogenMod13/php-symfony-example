@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Model\Type;
 
+use BadMethodCallException;
+use JsonSerializable;
 use Ramsey\Uuid\Uuid;
 use InvalidArgumentException;
 
-class BlogId implements \JsonSerializable
+class BlogId implements JsonSerializable
 {
 	private ?string $value;
 
@@ -34,6 +36,9 @@ class BlogId implements \JsonSerializable
 
 	public function getValue(): string
 	{
+		if ($this->isNullable()) {
+			throw new BadMethodCallException("Unable get nullable value");
+		}
 		return $this->value;
 	}
 
