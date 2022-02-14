@@ -34,11 +34,11 @@ class BlogId implements JsonSerializable
 		$this->value = $value;
 	}
 
-	public function getValue(): string
+	public function getValue(): ?string
 	{
-		if ($this->isNullable()) {
-			throw new BadMethodCallException("Unable get nullable value");
-		}
+		/*if ($this->isNullable()) {
+			throw new BadMethodCallException("Unable to pass nullable value");
+		}*/
 		return $this->value;
 	}
 
