@@ -6,7 +6,9 @@ namespace App\Application\Controller;
 use App\Domain\Model\Type\BlogId;
 use App\Domain\Repository\AuthorRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -30,26 +32,26 @@ class AuthorController extends AbstractController
 	#[Route('/{id}', methods: ['GET'])]
 	public function getAuthor(string $id): Response
 	{
-		try {
-			return $this->json(
-				$this->authorRepository->get(BlogId::generate($id)),
-				context: [AbstractNormalizer::GROUPS => ['rest']]
-			);
-		} catch (AuthorNotFoundException $e) {
-			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+		if (!Uuid::isValid($id)) {
+			throw new BadRequestException();
 		}
+
+		return $this->json(
+			$this->authorRepository->get(BlogId::generate($id)),
+			context: [AbstractNormalizer::GROUPS => ['rest']]
+		);
 	}
 
 	#[Route('/{id}/blog', methods: ['GET'])]
 	public function getBlog(string $id): Response
 	{
-		try {
-			return $this->json(
-				$this->authorRepository->get(BlogId::generate($id))->getBlog(),
-				context: [AbstractNormalizer::GROUPS => ['rest']]
-			);
-		} catch (AuthorNotFoundException $e) {
-			return $this->json(['error' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+		if (!Uuid::isValid($id)) {
+			throw new BadRequestException();
 		}
+
+		return $this->json(
+			$this->authorRepository->get(BlogId::generate($id))->getBlog(),
+			context: [AbstractNormalizer::GROUPS => ['rest']]
+		);
 	}
 }

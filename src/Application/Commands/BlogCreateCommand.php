@@ -3,14 +3,20 @@
 namespace App\Application\Commands;
 
 use App\Domain\Model\AuthorInfo;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 class BlogCreateCommand
 {
-    public function __construct(
-        public string $userId,
-        public string $name,
-        public string $alias,
-        public string $categoryId,
-        public AuthorInfo $author
-    ) {}
+	#[NotBlank]
+	#[Uuid]
+	public string $userId;
+	#[NotBlank]
+	public string $name;
+	#[NotBlank]
+	public string $alias;
+	#[NotBlank]
+	public string $categoryId;
+	#[NotBlank]
+	public AuthorInfo $author;
 }

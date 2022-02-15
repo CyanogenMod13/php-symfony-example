@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -27,11 +28,14 @@ class Article
 	#[ORM\Column]
 	private DateTimeImmutable $publishedAt;
 
+	#[ORM\Column(nullable: true)]
+	private DateTimeImmutable $editedAt;
+
 	#[ORM\Column]
 	#[Groups('rest')]
 	private string $title;
 
-	#[ORM\Column]
+	#[ORM\Column(type: 'text')]
 	#[Groups('rest')]
 	private string $content;
 
@@ -39,26 +43,18 @@ class Article
 	#[Groups('rest')]
 	private Author $author;
 
-	#[ORM\ManyToOne]
-	#[Groups('rest')]
-	#[Context([
-		AbstractNormalizer::ATTRIBUTES => ['blog' => ['id']]
-	])]
-	private Blog $blog;
-
 	#[ORM\OneToMany(mappedBy: 'article', targetEntity: 'Comment', cascade: ['all'])]
 	private Collection $comments;
 
 	#[ORM\OneToMany(mappedBy: 'article', targetEntity: 'Like', cascade: ['all'])]
 	private Collection $likes;
 
-	public function __construct(BlogId $id, string $title, string $content, Author $author, Blog $blog)
+	public function __construct(BlogId $id, string $title, string $content, Author $author)
 	{
 		$this->id = $id;
 		$this->title = $title;
 		$this->content = $content;
 		$this->author = $author;
-		$this->blog = $blog;
 		$this->comments = new ArrayCollection();
 		$this->likes = new ArrayCollection();
 		$this->publishedAt = new DateTimeImmutable();
@@ -66,15 +62,22 @@ class Article
 
 	public function addComment(string $content, Author $creator): Comment
 	{
-		$comment = new Comment(Uuid::uuid4()->toString(), $content, $creator);
+		$comment = new Comment(BlogId::generate(), $content, $creator);
 		$comment->setArticle($this);
 		$this->comments->add($comment);
 		return $comment;
 	}
 
-	public function like(Author $author): void //like
+	public function like(Author $author): void
 	{
-		$this->likes->add(new Like(Uuid::uuid4()->toString(), $author, $this));
+		$this->likes->add(new Like(BlogId::generate(), $author, $this));
+	}
+
+	public function edit(string $title, string $content): void
+	{
+		$this->title = $title;
+		$this->content = $content;
+		$this->editedAt = new DateTimeImmutable();
 	}
 
 	public function getId(): BlogId
@@ -97,21 +100,23 @@ class Article
 		return $this->author;
 	}
 
-	public function getBlog(): Blog
-	{
-		return $this->blog;
-	}
-
 	public function getPublishedAt(): DateTimeImmutable
 	{
 		return $this->publishedAt;
 	}
 
 	#[Groups('rest')]
-	#[SerializedName('time')]
-	public function getTimeString(): string
+	#[SerializedName('publishedAt')]
+	public function getPublishedAtString(): string
 	{
-		return $this->publishedAt->format('l, d.m.Y H:i');
+		return $this->publishedAt->format('l, d M Y') . ' at ' . $this->publishedAt->format('H:i');
+	}
+
+	#[Groups('rest')]
+	#[SerializedName('editedAt')]
+	public function getEditedAtString(): string
+	{
+		return $this->editedAt->format('l, d M Y') . ' at ' . $this->editedAt->format('H:i');
 	}
 
 	/**

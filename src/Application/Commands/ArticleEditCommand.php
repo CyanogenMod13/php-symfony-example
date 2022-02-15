@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Commands;
@@ -6,16 +7,13 @@ namespace App\Application\Commands;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Uuid;
 
-class BlogEditCommand
+class ArticleEditCommand
 {
 	#[NotBlank]
-	#[Uuid]
-	public string $blogId;
+	public string $title;
 	#[NotBlank]
-	public string $name;
-	#[NotBlank]
-	public string $alias;
+	public string $content;
 	#[NotBlank]
 	#[Uuid]
-	public string $categoryId;
+	public string $articleId;
 }

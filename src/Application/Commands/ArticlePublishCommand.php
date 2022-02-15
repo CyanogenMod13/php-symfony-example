@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Application\Commands;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
+
 class ArticlePublishCommand
 {
-	public function __construct(
-		public string $authorId,
-		public string $title,
-		public string $content,
-		public string $blogId
-	) {}
+	#[NotBlank]
+	#[Uuid]
+	public string $authorId;
+	#[NotBlank]
+	public string $title;
+	#[NotBlank]
+	public string $content;
 }

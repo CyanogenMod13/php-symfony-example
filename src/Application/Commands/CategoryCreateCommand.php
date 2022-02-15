@@ -5,9 +5,10 @@ declare(strict_types=1);
 
 namespace App\Application\Commands;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 class CategoryCreateCommand
 {
-	public function __construct(
-		public string $name
-	) {}
+	#[NotBlank]
+	public string $name;
 }
