@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine;
 
-use App\Domain\Model\Author;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Author;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\AuthorRepositoryInterface;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;

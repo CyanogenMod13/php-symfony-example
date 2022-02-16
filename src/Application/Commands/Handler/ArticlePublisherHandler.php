@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\ArticlePublishCommand;
-use App\Domain\Model\Article;
-use App\Domain\Model\Type\BlogId;
-use App\Domain\Repository\BlogRepositoryInterface;
+use App\Domain\Model\Blog\Article;
+use App\Domain\Model\Blog\Event\ArticlePublishedEvent;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\Exception\AuthorNotFoundException;
 use App\Infrastructure\Persistence\Doctrine\ArticleRepository;
 use App\Infrastructure\Persistence\Doctrine\AuthorRepository;
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ArticlePublisherHandler
 {
 	public function __construct(
 		private ArticleRepository $articleRepository,
 		private AuthorRepository $authorRepository,
+		private EventDispatcherInterface $dispatcher
 	) {}
 
 	/**
@@ -33,6 +34,8 @@ class ArticlePublisherHandler
 			$author
 		);
 		$this->articleRepository->add($article);
+
+		$this->dispatcher->dispatch(new ArticlePublishedEvent($article), ArticlePublishedEvent::NAME);
 		return $article;
 	}
 }

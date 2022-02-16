@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine;
 
-use App\Domain\Model\Blog;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Blog;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +34,7 @@ class BlogRepository implements BlogRepositoryInterface
     }
 
     /**
-     * @return Blog[]
+     * @return \App\Domain\Model\Blog\Blog[]
      */
     public function getAll(): array
     {

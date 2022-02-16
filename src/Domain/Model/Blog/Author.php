@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Domain\Model;
+namespace App\Domain\Model\Blog;
 
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Type\BlogId;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 

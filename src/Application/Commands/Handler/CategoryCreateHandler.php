@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\CategoryCreateCommand;
-use App\Domain\Model\Category;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Category;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\CategoryRepositoryInterface;
-use Ramsey\Uuid\Uuid;
 
 class CategoryCreateHandler implements Handler
 {

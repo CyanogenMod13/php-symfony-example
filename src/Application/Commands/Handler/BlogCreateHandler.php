@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\BlogCreateCommand;
-use App\Domain\Model\Blog;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Blog;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
 use App\Domain\Repository\CategoryRepositoryInterface;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
-use Ramsey\Uuid\Uuid;
 
 class BlogCreateHandler implements Handler
 {

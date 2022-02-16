@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Controller;
+namespace App\Application\Controller\Blog;
 
 use App\Application\Commands\ArticleEditCommand;
 use App\Application\Commands\ArticlePublishCommand;
 use App\Application\Commands\Handler\ArticleEditHandler;
 use App\Application\Commands\Handler\ArticlePublisherHandler;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\ArticleRepositoryInterface;
-use App\Domain\Repository\Exception\ArticleNotFoundException;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -19,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -67,14 +64,13 @@ class ArticleController extends AbstractController
 		return $this->json($comments, context: [AbstractNormalizer::GROUPS => ['rest']]);
 	}
 
-	#[Route('/{id}/publish', methods: ['POST'])]
-	public function publishArticle(string $id, Request $request, ArticlePublisherHandler $articlePublisherHandle): Response
+	#[Route('/publish', methods: ['POST'])]
+	public function publishArticle(Request $request, ArticlePublisherHandler $articlePublisherHandle): Response
 	{
 		$articlePublishCommand = $this->serializer->deserialize(
 			$request->getContent(),
 			ArticlePublishCommand::class,
 			'json');
-		$articlePublishCommand->blogId = $id;
 
 		$violations = $this->validator->validate($articlePublishCommand);
 		if ($violations->count() > 0) {

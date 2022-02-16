@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine;
 
-use App\Domain\Model\Article;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Article;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\ArticleRepositoryInterface;
 use App\Domain\Repository\Exception\ArticleNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;

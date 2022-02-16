@@ -1,18 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Controller;
+namespace App\Application\Controller\Blog;
 
-use App\Application\Commands\ArticlePublishCommand;
 use App\Application\Commands\BlogCreateCommand;
 use App\Application\Commands\BlogEditCommand;
-use App\Application\Commands\Handler\ArticlePublisherHandler;
 use App\Application\Commands\Handler\BlogCreateHandler;
 use App\Application\Commands\Handler\BlogEditHandler;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
-use App\Domain\Repository\Exception\BlogNotFoundException;
-use App\Domain\Repository\Exception\CategoryNotFoundException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

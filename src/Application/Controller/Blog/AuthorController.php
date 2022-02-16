@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Controller;
+namespace App\Application\Controller\Blog;
 
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\AuthorRepositoryInterface;
-use App\Domain\Repository\Exception\AuthorNotFoundException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

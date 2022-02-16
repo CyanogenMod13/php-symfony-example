@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Repository;
 
-use App\Domain\Model\Blog;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Blog;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\Exception\BlogNotFoundException;
 
 interface BlogRepositoryInterface

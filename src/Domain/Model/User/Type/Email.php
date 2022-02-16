@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Model\User;
+namespace App\Domain\Model\User\Type;
 
 class Email
 {

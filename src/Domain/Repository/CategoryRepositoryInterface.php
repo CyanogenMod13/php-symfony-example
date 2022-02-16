@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Repository;
 
-use App\Domain\Model\Category;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Category;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\Exception\CategoryNotFoundException;
 
 interface CategoryRepositoryInterface
@@ -16,7 +16,7 @@ interface CategoryRepositoryInterface
 	public function get(BlogId $id): Category;
 
 	/**
-	 * @return Category[]
+	 * @return \App\Domain\Model\Blog\Category[]
 	 */
 	public function getAll(): array;
 

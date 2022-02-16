@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Model\Type;
+namespace App\Domain\Model\Blog\Type;
 
-use BadMethodCallException;
+use InvalidArgumentException;
 use JsonSerializable;
 use Ramsey\Uuid\Uuid;
-use InvalidArgumentException;
 
 class BlogId implements JsonSerializable
 {

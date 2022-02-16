@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Commands\Handler;
 
 use App\Application\Commands\ArticleEditCommand;
-use App\Domain\Model\Type\BlogId;
+use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\Exception\ArticleNotFoundException;
 use App\Infrastructure\Persistence\Doctrine\ArticleRepository;
 use App\Infrastructure\Persistence\Flusher;
