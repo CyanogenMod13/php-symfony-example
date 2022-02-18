@@ -13,27 +13,27 @@
 </template>
 
 <script>
-import ArticlesViewComponent from "../components/ArticlesViewComponent.vue";
-import LoadSpinnerComponent from "../components/LoadSpinnerComponent.vue";
+import ArticlesViewComponent from "../../components/List/ArticlesViewItem.vue";
+import LoadSpinnerComponent from "../../components/LoadSpinner.vue";
+import axios from "axios";
+
 export default {
 	name: "ArticlesView",
 	components: {LoadSpinnerComponent, ArticlesViewComponent},
 	methods: {
 		onLoadContent: function () {
-			const view = this
-			const request = new XMLHttpRequest()
-			request.onload = function () {
-				console.log(view.articles = JSON.parse(this.responseText))
-			}
-			request.open('GET', 'http://192.168.0.7/article', true)
-			request.send()
+			axios.get('http://localhost:81/articles').then((response) => {
+				this.articles = response.data
+			})
 		}
 	},
 	data() {
-		this.onLoadContent()
 		return {
 			articles: null
 		}
+	},
+	mounted() {
+		this.onLoadContent()
 	}
 }
 </script>

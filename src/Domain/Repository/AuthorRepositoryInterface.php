@@ -16,7 +16,9 @@ interface AuthorRepositoryInterface
 	public function get(BlogId $id): Author;
 
 	/**
-	 * @return \App\Domain\Model\Blog\Author[]
+	 * @return Author[]
 	 */
 	public function getAll(): array;
+
+	public function add(Author $author, bool $transactional = false): void;
 }

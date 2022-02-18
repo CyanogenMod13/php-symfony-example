@@ -9,6 +9,7 @@ use App\Application\Commands\Handler\BlogCreateHandler;
 use App\Application\Commands\Handler\BlogEditHandler;
 use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\BlogRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -29,8 +30,15 @@ class BlogController extends AbstractController
     ) {}
 
     #[Route('/', methods: 'GET')]
-    public function getAll(): Response
+    public function getAll(LoggerInterface $logger): Response
     {
+		$user = $this->getUser();
+		if (!is_null($user)) {
+			$logger->info($user->getUserIdentifier());
+		} else {
+			$logger->info('User is null');
+		}
+
         $blogs = $this->blogRepository->getAll();
         return $this->json($blogs, context: [AbstractNormalizer::GROUPS => ['rest']]);
     }

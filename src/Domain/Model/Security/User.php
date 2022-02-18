@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Model\User;
+namespace App\Domain\Model\Security;
 
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,13 +27,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private string $password;
 
-	/*public function __construct(string $id, string $email, array $roles, string $hashedPassword)
+	#[ORM\Column(nullable: true)]
+	private ?string $token;
+
+	#[ORM\Column(nullable: true)]
+	private ?DateTimeImmutable $tokenExpireAt;
+
+	public function __construct(?string $id, ?string $email, ?string $hashedPassword)
 	{
 		$this->id = $id;
 		$this->email = $email;
-		$this->roles = $roles;
 		$this->password = $hashedPassword;
-	}*/
+		$this->roles = ['ROLE_USER'];
+	}
+
+	public function updateToken(string $token): void
+	{
+		$this->token = $token;
+		$now = new DateTimeImmutable();
+		$this->tokenExpireAt = $now->add(DateInterval::createFromDateString('7 day'));
+	}
+
+	public function getToken(): ?string
+	{
+		return $this->token;
+	}
+
+	public function getTokenExpireAt(): ?DateTimeImmutable
+	{
+		return $this->tokenExpireAt;
+	}
+
+	public function setId(string $id): void
+	{
+		$this->id = $id;
+	}
+
+	public function setEmail(string $email): void
+	{
+		$this->email = $email;
+	}
+
+	public function setRoles(array $roles): void
+	{
+		$this->roles = $roles;
+	}
+
+	public function setPassword(string $password): void
+	{
+		$this->password = $password;
+	}
 
 	public function getId(): string
 	{

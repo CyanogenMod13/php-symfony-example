@@ -4,49 +4,51 @@
 		<div>
 			<div class="d-flex flex-row">
 				<div class="me-1">
-					<object data="svg/address-card-solid.svg" height="20" width="20"></object>
+					<img src="@/svg/address-card-solid.svg" height="20" width="20">
 				</div>
 				<div>{{ article.author.firstName }} {{ article.author.lastName }}</div>
 				<div class="text-muted ms-1">{{ article.time }}</div>
 			</div>
 			<h3>{{ article.title }}</h3>
 		</div>
-		<div>{{ article.content }}</div>
+		<div v-html="article.content"></div>
 		<div class="d-flex flex-row border-top pt-2">
 			<button class="btn btn-primary d-flex">
-				<object data="svg/heart-solid.svg" height="20" width="20"></object>
+				<img src="@/svg/heart-solid.svg" height="20" width="20">
 				<div class="ms-1">Like me</div>
 			</button>
 		</div>
 	</div>
 	<div id="comments" class="bg-light p-3 mt-2">
 		<div class="border-bottom mb-2">
-			<p>3 Comments</p>
+			<p>{{numberComments}} Comments</p>
 		</div>
+		<CommentViewer v-bind:comments="article.comments"/>
 	</div>
 </template>
 
 <script>
-import LoadSpinnerComponent from "../components/LoadSpinnerComponent.vue";
+import LoadSpinnerComponent from "../../components/LoadSpinner.vue";
+import CommentViewer from "./CommentViewer.vue";
+import axios from "axios";
+
 export default {
 	name: "ArticleView",
-	components: {LoadSpinnerComponent},
+	components: {CommentViewer, LoadSpinnerComponent},
 	methods: {
 		loadArticle: function () {
-			const view = this
-			const request = new XMLHttpRequest()
-			request.onload = function () {
-				view.article = JSON.parse(this.responseText)
-			}
-			request.open('GET', `http://192.168.0.7/article/${this.$route.params.id}`, true)
-			request.send()
+			axios.get(`http://localhost:81/articles/${this.$route.params.id}`).then((response) => {
+				this.article = response.data
+			})
 		}
 	},
 	data() {
-		this.loadArticle()
 		return {
 			article: null
 		}
+	},
+	mounted() {
+		this.loadArticle()
 	}
 }
 </script>

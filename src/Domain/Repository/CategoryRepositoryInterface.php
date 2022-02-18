@@ -16,7 +16,7 @@ interface CategoryRepositoryInterface
 	public function get(BlogId $id): Category;
 
 	/**
-	 * @return \App\Domain\Model\Blog\Category[]
+	 * @return Category[]
 	 */
 	public function getAll(): array;
 

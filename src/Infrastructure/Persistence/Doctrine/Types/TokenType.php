@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Types;
 
-use App\Domain\Model\Security\Type\Email;
+use App\Domain\Model\Security\Type\Token;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\StringType;
 
-class EmailType extends StringType
+class TokenType extends StringType
 {
-	private const name = 'user_email';
+	public const name = 'user_token';
 
-	public function convertToDatabaseValue($value, AbstractPlatform $platform)
+	public function convertToPHPValue($value, AbstractPlatform $platform): Token
 	{
-		if (!($value instanceof Email)) {
+		if (!(is_string($value) || is_null($value))) {
 			throw new ConversionException();
 		}
-		return $value->getEmail();
+		return new Token($value);
 	}
 
-	public function convertToPHPValue($value, AbstractPlatform $platform): Email
+	public function convertToDatabaseValue($value, AbstractPlatform $platform): string
 	{
-		if (!is_string($value)) {
+		if (!($value instanceof Token)) {
 			throw new ConversionException();
 		}
-		return new Email($value);
+		return $value->getToken();
 	}
 
 	public function requiresSQLCommentHint(AbstractPlatform $platform): bool

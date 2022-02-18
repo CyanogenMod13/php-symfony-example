@@ -10,6 +10,7 @@ use App\Application\Commands\Handler\ArticleEditHandler;
 use App\Application\Commands\Handler\ArticlePublisherHandler;
 use App\Domain\Model\Blog\Type\BlogId;
 use App\Domain\Repository\ArticleRepositoryInterface;
+use OpenApi\Attributes as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -81,9 +82,11 @@ class ArticleController extends AbstractController
 		return $this->json(['articleId' => $article->getId()], Response::HTTP_CREATED);
 	}
 
-	#[Route('/{id}/edit', methods: ['POST'])]
+	#[Route('/{id}/edit', methods: ['PUT'])]
 	public function editArticle(string $id, Request $request, ArticleEditHandler $articleEditHandler): Response
 	{
+		$user = $this->getUser();
+
 		$articleEditCommand = $this->serializer->deserialize(
 			$request->getContent(),
 			ArticleEditCommand::class,

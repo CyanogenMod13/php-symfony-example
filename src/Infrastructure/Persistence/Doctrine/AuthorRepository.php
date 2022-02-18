@@ -40,4 +40,12 @@ class AuthorRepository implements AuthorRepositoryInterface
     {
         return $this->repository->findAll();
     }
+
+	public function add(Author $author, bool $transactional = false): void
+	{
+		$this->entityManager->persist($author);
+		if (!$transactional) {
+			$this->entityManager->flush();
+		}
+	}
 }

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-	name: "LoadSpinnerComponent"
+	name: "LoadSpinner"
 }
 </script>
 

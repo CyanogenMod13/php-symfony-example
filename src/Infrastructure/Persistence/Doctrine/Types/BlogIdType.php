@@ -33,6 +33,7 @@ class BlogIdType extends GuidType
 
 	public function convertToPHPValue($value, AbstractPlatform $platform): BlogId
 	{
+		// not(a) and not(b) == not(a or b)
 		if (!is_null($value) && !is_string($value)) {
 			throw new ConversionException("expected string or null, given \"$value\"");
 		}

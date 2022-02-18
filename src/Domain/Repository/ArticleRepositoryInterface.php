@@ -16,7 +16,7 @@ interface ArticleRepositoryInterface
 	public function get(BlogId $id);
 
 	/**
-	 * @return \App\Domain\Model\Blog\Article[]
+	 * @return Article[]
 	 */
 	public function getAll(): array;
 

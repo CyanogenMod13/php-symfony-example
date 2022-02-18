@@ -18,18 +18,10 @@ class Author
 	#[ORM\Embedded(columnPrefix: false)]
     private AuthorInfo $name;
 
-    #[ORM\OneToOne(mappedBy: 'author')]
-    private Blog $blog;
-
-    public function __construct(
-        BlogId $id,
-        AuthorInfo $name,
-        Blog $blog
-    )
+    public function __construct(BlogId $id, AuthorInfo $name)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->blog = $blog;
     }
 
 	#[Groups('rest')]
@@ -60,9 +52,4 @@ class Author
 	{
 		return $this->name;
 	}
-
-    public function getBlog(): Blog
-    {
-        return $this->blog;
-    }
 }

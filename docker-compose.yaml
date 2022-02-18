@@ -51,6 +51,27 @@ services:
         ports:
             - "54329:5432"
 
+    mailer:
+        image: mailhog/mailhog
+        ports:
+            - "8086:8025"
+            - "1025:1025"
+
+    #redis:
+    #    image: redis:5.0-alpine
+    #    volumes:
+    #        - redis:/data
+    #    command:
+    #        - 'redis-server'
+    #        - '--databases 2'
+    #        - '--save 900 1'
+    #        - '--save 300 10'
+    #        - '--save 60 10000'
+    #        - '--requirepass secret'
+
+
+
 volumes:
     composer:
     postgres:
+#    redis:

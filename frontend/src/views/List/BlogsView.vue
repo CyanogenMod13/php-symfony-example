@@ -13,28 +13,27 @@
 </template>
 
 <script>
-import BlogsViewComponent from "../components/BlogsViewComponent.vue";
-import LoadSpinnerComponent from "../components/LoadSpinnerComponent.vue";
+import BlogsViewComponent from "../../components/List/BlogsViewItem.vue";
+import LoadSpinnerComponent from "../../components/LoadSpinner.vue";
+import axios from "axios";
 
 export default {
 	name: "BlogsView",
 	components: {LoadSpinnerComponent, BlogsViewComponent},
 	methods: {
 		loadContent: function () {
-			const view = this
-			const request = new XMLHttpRequest()
-			request.onload = function () {
-				view.blogs = JSON.parse(this.responseText)
-			}
-			request.open('GET', 'http://192.168.0.7/blog', true)
-			request.send()
+			axios.get('http://localhost:81/blogs').then((response) => {
+				this.blogs = response.data
+			})
 		}
 	},
 	data() {
-		this.loadContent()
 		return {
 			blogs: null
 		}
+	},
+	mounted() {
+		this.loadContent()
 	}
 }
 </script>

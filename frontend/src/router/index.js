@@ -1,9 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue';
-import CategoriesView from "../views/CategoriesView.vue";
-import BlogsView from "../views/BlogsView.vue";
-import ArticlesView from "../views/ArticlesView.vue";
-import ArticleView from "../views/ArticleView.vue";
+import CategoriesView from "../views/List/CategoriesView.vue";
+import BlogsView from "../views/List/BlogsView.vue";
+import ArticlesView from "../views/List/ArticlesView.vue";
+import ArticleView from "../views/Article/ArticleView.vue";
+import Login from "../components/Auth/Login.vue";
+import Registration from "../components/Auth/Registration.vue";
 
 
 const router = createRouter({
@@ -33,6 +35,16 @@ const router = createRouter({
 			path: '/articles',
 			name: 'Articles',
 			component: ArticlesView
+		},
+		{
+			path: '/login',
+			name: 'Login',
+			component: Login
+		},
+		{
+			path: '/registration',
+			name: 'Registration',
+			component: Registration
 		}
 	]
 })

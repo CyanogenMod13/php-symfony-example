@@ -6,6 +6,7 @@ namespace App\Domain\Model\Blog\Event\Listener;
 
 use App\Domain\Model\Blog\Event\ArticlePublishedEvent;
 use App\Domain\Service\EmailSenderService;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ArticlePublishedEventListener
 {
