@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use function Sodium\add;
 
+#[Route(['/api', '/'])]
 class AuthController extends AbstractController
 {
 	public function __construct(
@@ -35,20 +36,20 @@ class AuthController extends AbstractController
 	{
 		$user = $this->getUser();
 		if (!($user instanceof User)) {
-			throw new UnauthorizedHttpException();
+			throw new UnauthorizedHttpException('user-token');
 		}
 
-		$token = $tokenService->generateToken($user->getUserIdentifier());
+		$token = $tokenService->generateToken();
 		$user->updateToken($token);
 		$this->flusher->flush();
 
-		$response = $this->json([
-			'user' => $user->getUserIdentifier(),
-			'token' => $token
-		]);
-		$time = (new DateTimeImmutable())->add(\DateInterval::createFromDateString('7 day'))->format(\DateTimeInterface::COOKIE);
-		$response->headers->setCookie(new Cookie('aaaa', '12345', $time));
-
+		$response = $this->json(['success' => true]);
+		$response->headers->setCookie(
+			new Cookie('username', $user->getUserIdentifier(), $user->getTokenExpireAt())
+		);
+		$response->headers->setCookie(
+			new Cookie('token', $user->getToken(), $user->getTokenExpireAt())
+		);
 		return $response;
 	}
 

@@ -6,6 +6,7 @@ import ArticlesView from "../views/List/ArticlesView.vue";
 import ArticleView from "../views/Article/ArticleView.vue";
 import Login from "../components/Auth/Login.vue";
 import Registration from "../components/Auth/Registration.vue";
+import ArticleEditor from "../views/Article/Editor/ArticleEditor.vue";
 
 
 const router = createRouter({
@@ -45,7 +46,13 @@ const router = createRouter({
 			path: '/registration',
 			name: 'Registration',
 			component: Registration
+		},
+		{
+			path: "/publish",
+			name: 'ArticleEditor',
+			component: ArticleEditor
 		}
+
 	]
 })
 

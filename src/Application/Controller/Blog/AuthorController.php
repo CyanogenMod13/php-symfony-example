@@ -22,6 +22,7 @@ class AuthorController extends AbstractController
 		private AuthorRepositoryInterface $authorRepository
 	) {}
 
+	/** ROLE_ADMIN */
 	#[Route('/', methods: ['GET'])]
 	public function getAll(): Response
 	{
@@ -31,6 +32,7 @@ class AuthorController extends AbstractController
 		);
 	}
 
+	/** ROLE_ADMIN */
 	#[Route('/{id}', methods: ['GET'])]
 	public function getAuthor(string $id): Response
 	{
@@ -44,6 +46,7 @@ class AuthorController extends AbstractController
 		);
 	}
 
+	/** ROLE_ADMIN */
 	#[Route('/{id}/blog', methods: ['GET'])]
 	public function getBlog(string $id): Response
 	{

@@ -31,11 +31,9 @@ export default {
 	methods: {
 		login: function () {
 			this.isButtonLoad = true
-			axios.post('http://localhost:81/login', this.loginData).then(response => {
-				console.log(response.data)
-				Cookie.set('username', response.data.user, {expires: 7})
-				Cookie.set('token', response.data.token, {expires: 7})
-				console.log(Cookie.get())
+			axios.post('http://localhost:81/api/login', this.loginData).then(response => {
+				console.log(response)
+				console.log(response.headers["set-cookie"])
 				this.$router.push('/')
 			}).catch((reason => {
 				console.log(reason)

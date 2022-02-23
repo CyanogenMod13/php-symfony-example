@@ -37,7 +37,7 @@ export default {
 	components: {CommentViewer, LoadSpinnerComponent},
 	methods: {
 		loadArticle: function () {
-			axios.get(`http://localhost:81/articles/${this.$route.params.id}`).then((response) => {
+			axios.get(`http://localhost:81/api/articles/${this.$route.params.id}`).then((response) => {
 				this.article = response.data
 			})
 		}

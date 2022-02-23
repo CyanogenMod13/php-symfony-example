@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/blogs')]
+#[Route(['/blogs', '/api/blogs'])]
 class BlogController extends AbstractController
 {
     public function __construct(

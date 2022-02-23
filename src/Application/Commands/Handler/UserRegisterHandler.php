@@ -33,7 +33,7 @@ class UserRegisterHandler
 	{
 		$userId = Uuid::uuid4()->toString();
 
-		$token = $this->tokenService->generateToken($command->username . $command->penName);
+		$token = $this->tokenService->generateToken();
 
 		/** Begin transaction **/
 		$user = new User($userId, $command->username, '');

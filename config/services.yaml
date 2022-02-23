@@ -37,6 +37,8 @@ services:
         arguments:
             $sender: '%env(SENDER_EMAIL)%'
 
+    # EventDispatcher
+
     ArticlePublishedEventListener:
         class: App\Domain\Model\Blog\Event\Listener\ArticlePublishedEventListener
 
@@ -47,3 +49,5 @@ services:
               arguments:
                   - 'article.published'
                   - ['@ArticlePublishedEventListener', 'sendEmailOnPublished']
+
+    # EventDispatcher

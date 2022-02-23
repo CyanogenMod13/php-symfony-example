@@ -16,4 +16,7 @@ class ArticleEditCommand
 	#[NotBlank]
 	#[Uuid]
 	public string $articleId;
+	#[NotBlank]
+	#[Uuid]
+	public string $authorId;
 }

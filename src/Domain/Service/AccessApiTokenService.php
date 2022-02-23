@@ -9,8 +9,8 @@ use Ramsey\Uuid\Uuid;
 class AccessApiTokenService
 {
 	//stub generator
-	public function generateToken(string $identity): string
+	public function generateToken(): string
 	{
-		return sha1($identity . Uuid::uuid4()->toString());
+		return base64_encode(Uuid::uuid4()->toString());
 	}
 }

@@ -2,6 +2,7 @@ doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
         types:
+            user_token: 'App\Infrastructure\Persistence\Doctrine\Types\TokenType'
             user_email: 'App\Infrastructure\Persistence\Doctrine\Types\EmailType'
             blog_id: 'App\Infrastructure\Persistence\Doctrine\Types\BlogIdType'
 

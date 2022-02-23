@@ -25,14 +25,15 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 {
 	public function supports(Request $request): ?bool
 	{
-		return $request->headers->has('X-AUTH-TOKEN') &&
-			$request->headers->has('X-AUTH-USER');
+		return $request->cookies->has('username') &&
+			$request->cookies->has('token') &&
+			$request->getRequestUri() !== '/login';
 	}
 
 	public function authenticate(Request $request): Passport
 	{
-		$userIdentity = $request->headers->get('X-AUTH-USER');
-		$token = $request->headers->get('X-AUTH-TOKEN');
+		$userIdentity = $request->cookies->get('username');
+		$token = $request->cookies->get('token');
 		if (is_null($token) && is_null($userIdentity)) {
 			throw new AccessDeniedException();
 		}
@@ -51,7 +52,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
 	{
 		return new JsonResponse([
-			'message' => $exception->getMessageKey()
+			'success' => false,
+			'message' => 'Unauthorized'
 		], Response::HTTP_UNAUTHORIZED);
 	}
 

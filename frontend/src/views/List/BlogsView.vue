@@ -22,7 +22,7 @@ export default {
 	components: {LoadSpinnerComponent, BlogsViewComponent},
 	methods: {
 		loadContent: function () {
-			axios.get('http://localhost:81/blogs').then((response) => {
+			axios.get('http://localhost:81/api/blogs').then((response) => {
 				this.blogs = response.data
 			})
 		}
